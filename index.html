@@ -13,32 +13,42 @@
   	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#fullpage').fullpage({
-				sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE']
+				anchors: ['firstPage', 'secondPage', '3rdPage', '4thPage'],
+				sectionsColor: [],//['#C63D0F', '#1BBC9B', '#7E8F7C', '#C63D0F', '#1BBC9B', '#7E8F7C', '#C63D0F', '#1BBC9B'],
+				navigation: true,	
+				navigationPosition: 'right',
+				navigationTooltips: ['First page', 'Second page', 'Third and last page']
 			});
 		});
+	</script>
 	</script>
 
 </head>
 <body>
 
 <div id="fullpage">
-	<div class="section " id="section0">
-		<h1>fullPage.js</h1>
-		<p>No Anchor Links (#)</p>
-	</div>
-	<div class="section" id="section1">
-		<div class="demo">
+		<div class="section " id="section0">
+			<div class = "sec_container">
+				<div class = "title" id = "sec0_title">數據細說二二八事件<br>一份從未被注意過的政府公開資料</div>
+				<div ><img src="img/228icon.png"></div>
+			</div>
+		</div>
+		<div class="section" id="section1">
 			
 		</div>
-	</div>
-	<div class="section" id="section2">
-		<div class="intro">
-			<h1>URL without /#</h1>
-			<p>But back button won't work!</p>
+		<div class="section" id="section2">
+			<div class="demo"></div>
 		</div>
-	</div>
-</div>
-	
+		<div class = "section" id = "section3">
+		</div>
+		<div class = "section" id = "section4">
+		</div>
+		<div class = "section" id = "section5">
+		</div>
+		<div class = "section" id = "section6">
+		</div>
+		<div class = "section" id = "section7">
+		</div>
 </div>
 	
 </body>

@@ -1,0 +1,13 @@
+body{
+}
+
+.sec_container{
+	width: 100%;
+	max-width: 1056px;
+	margin: auto;
+}
+
+#section1{
+	background-image: url(../img/228icon.png);
+	background-size: cover;
+}
