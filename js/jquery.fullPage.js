@@ -1239,14 +1239,14 @@
 					afterSlideLoads();
 				}, options.scrollingSpeed, options.easing);
 			}else{*/
-				slidesContainer.animate({
+				/*slidesContainer.animate({
 					scrollLeft : destinyPos.left
 				}, options.scrollingSpeed, options.easing, function() {
 
 					afterSlideLoads();
-				});
+				});*/
 			// }
-
+			afterSlideLoads();
 			slidesNav.find('.active').removeClass('active');
 			slidesNav.find('li').eq(slideIndex).find('a').addClass('active');
 		}
