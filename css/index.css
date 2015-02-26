@@ -528,7 +528,7 @@ body{
 #sec8-scrolling{
 	height: 100%;
 	overflow: scroll;
-	overflow-x: hidden;
+	/*overflow-x: hidden;*/
 }
 
 #sec8-top{
