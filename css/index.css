@@ -299,7 +299,7 @@ body{
   	border-bottom: 16px solid transparent;
 }*/
 
-/*.tip-top{
+.tip-top{
 	width: 350px;
 	height: 100px;
 	position: absolute;
@@ -316,7 +316,7 @@ body{
 	top: -270px;
 }
 
-.tip-top:before{
+/*.tip-top:before{
 	content: '';
 	position: absolute;
 	top: 100%;
@@ -339,6 +339,11 @@ body{
   	border-right: 16px solid transparent;
   	border-left: 16px solid transparent;
 }*/
+
+#story-canvas{
+	position: absolute;
+	/*background: white;*/
+}
 
 #story-img{
 	position: absolute;

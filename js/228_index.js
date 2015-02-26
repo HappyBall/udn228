@@ -470,12 +470,20 @@ function mouseStopped(){
   console.log(tip_width);
 
   var canvasHeight = 100 - (tip_width/2);
-  var canvasWidth = 70;
+  var canvasWidth = 90;
 
-  d3.select("#story-block").append("canvas").attr({"width": canvasWidth, "height": canvasHeight});
+  d3.select("#story-canvas").append("canvas").attr({"width": canvasWidth, "height": canvasHeight, "id": "myCanvas"});
+  $("#story-canvas").css({"top": -canvasHeight, "left": 140 - canvasWidth});
 
+  var c=document.getElementById("myCanvas");
+  var ctx=c.getContext("2d");
+  ctx.moveTo(0, canvasHeight);
+  ctx.lineTo(canvasWidth, 0);
+  ctx.lineWidth=2;
+  ctx.strokeStyle="#FFFFFF";
+  ctx.stroke();
   
-
+  
   startingTop = mouseNow.y;
   startingLeft = mouseNow.x;
 }
