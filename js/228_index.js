@@ -44,6 +44,7 @@ $(document).ready(function() {
       $("#region-content-invis").css("display", "none");
       $("#story-img").fadeOut(1);
       $("#story-tip").fadeOut(1);
+      $("#story-canvas").fadeOut(1);
 
       if(nowSection == 2){
         if(sec2count == 0){
@@ -76,7 +77,7 @@ $(document).ready(function() {
             var r = getRandomInt(1,4);
             var r_story = getRandomInt(0,2264);
             // console.log(r);
-            var img_name = "../img/little-man-" + r.toString() + ".png"
+            var img_name = "img/little-man-" + r.toString() + ".png"
             document.getElementById("little-man").src = img_name;
 
             var s = storyDict[r_story]["detail"].replace("受難者", "我");
@@ -351,7 +352,7 @@ d3.json("data/tw_county_topo_mod.json", function (data) {
         d3.select(this).style("opacity", "1");
         document.getElementById("region-invis-map-name").innerHTML = it.properties.COUNTYNAME;
         document.getElementById("region-invis-peonum").innerHTML = region_map[it.properties.COUNTYNAME] + "人";
-        var s = "../img/" + regiontoEngDict[it.properties.COUNTYNAME] + ".png";
+        var s = "img/" + regiontoEngDict[it.properties.COUNTYNAME] + ".png";
         console.log(s);
         document.getElementById("region-map-img").src = s;
         $("#region-content").css("display", "none");
@@ -465,24 +466,59 @@ d3.csv("data/money_peopleNum.csv", function(data_money){
 function mouseStopped(){
   
   $("#story-tip").fadeIn(300);
+  $("#story-canvas").fadeIn(500);
 
-  var tip_width = document.getElementById("story-tip").clientHeight;
-  console.log(tip_width);
+  var tip_height = document.getElementById("story-tip").clientHeight;
+  var tip_width = document.getElementById("story-tip").clientWidth;
+  // console.log(tip_height);
 
-  var canvasHeight = 100 - (tip_width/2);
+  var canvasHeight = 100 - (tip_height/2);
   var canvasWidth = 90;
 
-  d3.select("#story-canvas").append("canvas").attr({"width": canvasWidth, "height": canvasHeight, "id": "myCanvas"});
-  $("#story-canvas").css({"top": -canvasHeight, "left": 140 - canvasWidth});
+  var allWidth = startingLeft + 50 + canvasWidth + tip_width;
+  var allHeight = startingTop - 25 - canvasHeight - (tip_height/2);
 
-  var c=document.getElementById("myCanvas");
-  var ctx=c.getContext("2d");
-  ctx.moveTo(0, canvasHeight);
-  ctx.lineTo(canvasWidth, 0);
-  ctx.lineWidth=2;
-  ctx.strokeStyle="#FFFFFF";
-  ctx.stroke();
-  
+  d3.select("#story-canvas").append("canvas").attr({"width": canvasWidth, "height": canvasHeight, "id": "myCanvas"});
+
+  if(allWidth > $(window).width()) {
+    // console.log(d3.select("#story-tip").style("border-left"));
+    d3.select("#story-tip")
+    .style("border-left", 0)
+    .style("padding-left", 0)
+    .style("border-right", "2px solid #FFFFFF")
+    .style("padding-right", "10px")
+    .style("left", "-490px");
+
+    $("#story-canvas").css({"top": -canvasHeight, "left": -140});
+
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+    ctx.moveTo(0, 0);
+    ctx.lineTo(canvasWidth, canvasHeight);
+    ctx.lineWidth=2;
+    ctx.strokeStyle="#FFFFFF";
+    ctx.stroke();
+  }
+
+  else{
+    d3.select("#story-tip")
+    .style("border-left", "2px solid #FFFFFF")
+    .style("padding-left", "10px")
+    .style("border-right", 0)
+    .style("padding-right", 0)
+    .style("left", "140px");
+
+    $("#story-canvas").css({"top": -canvasHeight, "left": 140 - canvasWidth});
+
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+    ctx.moveTo(0, canvasHeight);
+    ctx.lineTo(canvasWidth, 0);
+    ctx.lineWidth=2;
+    ctx.strokeStyle="#FFFFFF";
+    ctx.stroke();
+  }
+  // if(allHeight < 0) console.log("heightout");
   
   startingTop = mouseNow.y;
   startingLeft = mouseNow.x;
@@ -650,7 +686,7 @@ function numChange(){
     allmoney = 7168800000;
     document.getElementById("totalmoney").innerHTML = modNum(allmoney.toString());
     $("#totalmoney").css("color", "transparent");
-    d3.select('#totalmoney').transition().duration(2000).style("background-image", "url(../img/totalmoney.png)");
+    d3.select('#totalmoney').transition().duration(2000).style("background-image", "url(img/totalmoney.png)");
     d3.select('#sec6-title').transition().duration(2000).style("opacity", "1");
     d3.select('#myCarousel').transition().duration(2000).style("opacity", "1");
     return;
@@ -697,14 +733,14 @@ function moveTip(idx){
   document.getElementById("sec7-tip-title").innerHTML = timelineDictList[idx - 1]['title'];
   document.getElementById("sec7-tip-text").innerHTML = timelineDictList[idx - 1]['text'];
   var imageId = "sec7-img" + idx.toString();
-  var imageName = "../img/07-img-" + idx.toString() + "-hover.png";
+  var imageName = "img/07-img-" + idx.toString() + "-hover.png";
   d3.select('#sec7-tip').transition().duration(300).style("margin-left", tipMarginNow.toString()+ "px");
   document.getElementById(imageId).src = imageName;
 }
 
 function changeImg(idx){
   var imageId = "sec7-img" + idx.toString();
-  var imageName = "../img/07-img-" + idx.toString() + ".png";
+  var imageName = "img/07-img-" + idx.toString() + ".png";
   document.getElementById(imageId).src = imageName;
 }
 

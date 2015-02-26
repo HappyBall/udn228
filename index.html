@@ -2,7 +2,20 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
-	<title>Index</title>
+	<title>數據細說228</title>
+	<!-- for Facebook -->
+	<meta property="og:title" content="數據細說228"/> 
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="http://p.udn.com.tw/upf/newmedia/2015_data/20150226_udn228/udn228/index.html"/>
+	<meta property="og:image" content="http://p.udn.com.tw/upf/newmedia/2015_data/20150226_udn228/udn228/img/FB.jpg"/>
+	<meta property="og:site_name" content="聯合報系新媒體部"/> 
+	<meta property="og:description" content="二二八事件迄今68年，聯合報新媒體部將截至今年2月3日，總共2265位受難者獲國家賠償的資料，將數據視覺化，重新解析二二八事件。"/>
+	<!-- for Google -->
+	<meta name="description" content="二二八事件迄今68年，聯合報新媒體部將截至今年2月3日，總共2265位受難者獲國家賠償的資料，將數據視覺化，重新解析二二八事件。" />
+	<meta name="author" content="聯合報系新媒體部" />
+	<meta name="copyright" content="聯合報系新媒體部" />
+	<meta name="application-name" content="數據細說228" />
+
 	<script type="text/javascript" src="js/d3.js"></script>
   	<script type="text/javascript" src="js/jquery-2.1.3.js"></script>
   	<script type="text/javascript" src="js/topojson.js"></script>
@@ -17,10 +30,19 @@
 </head>
 <body>
 
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&appId=348612941903864&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <div id="fullpage">
 		<div class="section " id="section0">
 			<div class = "sec_container">
-				<img id = "sec0-img" src="img/a2.png">
+				<img id = "sec0-img" src="img/homepage_cover.png">
 				<!-- <div class = "title" id = "sec0_title">數據細說二二八事件<br>一份從未被注意過的政府公開資料</div>
 				<div ><img src="img/228icon.png"></div> -->
 			</div>
@@ -32,8 +54,9 @@
 					<div id = "age-title-block">
 						<div class = "age-titles" id = "age-title-1">青年多烈士</div>
 						<div class = "age-titles" id = "age-title-2">老人多傷殘</div>
+						<img id = "age-littleman" src="img/little-man-3.png">
 					</div>
-					<div id = "age-text">根據最新公布二二八受難者賠償金資料，截至今年2月3日，共2265受難者獲國家賠償，共71億多元。但行政院二二八事件研究報告指出，受難人數逾一萬多。據信因時空因素，人、物證佚失，多起受難無從賠償。<br><br>從資料拼湊受難者面貌，高達47.39%獲賠者，事件當時(1947年)年紀20-30歲。1995年政府通過「二二八事件處理及賠償條例」，若這些受難者在世，也已將近70、80歲。<br><br>單從當代的獲賠資料去回顧血腥歷史，不啻以釐窺天，但這也是一份最真實的台灣官方在威權鬆動後，截至目前的轉型正義成績單。
+					<div id = "age-text">根據最新公布二二八受難者賠償金資料，截至今年2月3日，共2265受難者獲國家賠償，共71億多元。但行政院二二八事件研究報告指出，受難人數逾一萬多。據信因時空因素，人、物證佚失，多起受難無從賠償。<br><br>從資料拼湊受難者面貌，高達47.39%獲賠者，事件當時(1947年)年紀20-30歲。1995年政府通過「二二八事件處理及賠償條例」，若這些受難者在世，也已將近70、80歲。<br><br>單從當代獲賠資料回顧血腥歷史，或許不足，但這也是一份最真實的台灣官方在威權鬆動後，截至目前的轉型正義成績單。
 					</div>
 					<div id = "age-peonum">
 						<!-- <img src="img/bbb.png"> -->
@@ -41,7 +64,7 @@
 						<div id = "age-peonum-text">人</div>
 					</div>
 				</div>
-				<img id = "age-littleman" src="img/little-man-3.png">
+				
 			</div>
 		</div>
 		<div class="section" id="section2">
@@ -90,15 +113,15 @@
 			<div class = "sec_container" id = "sec5-container">
 				<div id = "sec5-content">
 					<div id = "sec5-title">228國家怎麼賠？</div>
-					<div id = "sec5-text">二二八事件受難者事實上除了「死亡」之外還包含了「失蹤」、「傷殘」、「遭受羈押」以及「健康名譽受損」等等原因。<br><p>其中死亡與失蹤者共有830人占了36.62%，其家屬將可獲得政府60個基數的賠償，也就是600萬新台幣。<br><p>另外根據受難受傷程度還有被偷走的歲月長短而有所增減。嚴重者如一名被關20多年冤獄的人，獲賠了580萬。<br><p>
-					輕則有一名受害人因為走在路上唱日文歌而被羈押了10天共獲賠了3個基數也就是 30萬元新台幣。</div>
+					<div id = "sec5-text">賠償金資料視覺化後可看出獲賠金與受難人數，呈M型分佈。<br><br>
+						根據法定賠償分級，二二八事件受難者除「死亡」之外，還包含「失蹤」、「傷殘」、「遭受羈押」及「健康名譽受損」等等原因。<br><br>其中獲賠認定死亡與失蹤的受難者最多，共830人，占36.66%，其家屬可獲得60個基數的賠償，也就是600萬新台幣。<br><br>另外，根據受傷程度與「被偷走的歲月」長短，賠償金有所增減，嚴重者如一名被關20多年冤獄的人，獲賠580萬。也有一名受難者，只因為走在路上唱日文歌就被羈押10天，共獲賠30萬元。</div>
 				</div>
 				<div id = "sec5-chart"></div>
 			</div>
 		</div>
 		<div class = "section" id = "section5">
 			<div class = "sec_container" id = "sec6-container">
-				<div id = "sec6-title">賠償過後政府該做什麼？<br>人民又該做什麼？</div>
+				<div id = "sec6-title">除了賠償，政府該做什麼？<br>人民又該做什麼？</div>
 				<div id = "totalmoney">0</div>
 				<div id="myCarousel" class="carousel slide" data-ride="carousel">
 				    <!-- Indicators -->
@@ -111,10 +134,10 @@
 				    <div class="carousel-inner" role="listbox">
 				      <div class="item active">	
 				        <div id = "carousel-text-1">
-				        	<div id = "carousel-text-1-title">228事件過了68年，政府賠償累計71億<br>人民為什麼該要求政府道歉？</div>
+				        	<div id = "carousel-text-1-title">二二八過了68年，政府賠償71億，<br>人民為什麼應該要求政府道歉？</div>
 				        	<div id = "carousel-text-1-text">
-				        	1/27是國際大屠殺紀念日，以紀念猶太人二戰的遭遇並時時提醒全人類、防止類似的事情再度發生。德國總理梅克爾也一再重申德國將永遠為了納粹的罪行負起責任，因為她持續代表著德國政府，代表著德國。
-							縱然已經補償了71億多，仍有眾多不分本省外省的無名屍骨無法追查，傷痛也無法完全抹平。但是只要政府願意承擔責任，不刻意遺忘，裂痕就有可能慢慢彌補，民主就會慢慢地進步。
+					        	以德國為例，1月27日是國際大屠殺紀念日，時時提醒所有人，類似猶太人二戰的不幸不能再發生；德國總理梅克爾一再重申，德國將永遠為納粹罪行負責。當面對過去東德冷戰威權的監控迫害，德國以公開檔案的方式，讓加害者面對責任，讓被害者平反。<br><br>
+								雖然我政府目前賠償受難者71億多元，仍有不分本省、外省無名受難者，無法追查。但只要政府體制承擔責任、不遺忘，歷史裂痕才可彌補，民主得以成熟。
 							</div>
 				        	
 						</div>
@@ -122,11 +145,10 @@
 
 				      <div class="item">
 				        <div id = "carousel-text-2">
-				        	<div id = "carousel-text-2-title">前總統李登輝已代表政府向228受難者家屬們道歉了，為什麼還要討論228呢？</div>
+				        	<div id = "carousel-text-2-title">政府已經道歉了，<br>為什麼還要一直討論二二八？</div>
 				        	<div id = "carousel-text-2-text">
-				        		「轉型正義」絕對不只是政黨間的競選口號，是一條漫漫長路。<br>
-								「轉型」是指政治從威權到民主的轉型，「正義」是指該處理歷史正義的問題。包括該還給受難者的還有必須讓加害者面對的正義。代表國家對於過去政府不正義的行為所採取的各種補償與檢討措施，追究當時加害者的責任，並且補償受害者的損失與傷害。的目的除了還原歷史真相外，還要預防政府未來對於人權的侵犯以及歷史的重演。
-								這也是為什麼許多歷任的德國總理都有在公開場合代表德國政府道歉。
+				        		轉型正義是一條長路。「轉型」是指政治從威權到民主的轉型，「正義」是指還給受難者的正義，更重要的是，讓加害者面對責任。<br><br>
+				        		在當代思考與討論二二八，代表政府體制對於過去國家機器的不正義，所採取的補償與檢討，追究當時加害者的責任，並賠償受害者的傷害，更進一步，從當代的時空座標討論時，可再衍生理解出新的創造性意義，推進國家與公民，對民主進程的新創造力。
 				        	</div>
 				        </div>
 				      </div>
@@ -176,6 +198,7 @@
 						<a style = "display: table" href="#7thPage"><img src="img/arrow_toprev.png">回前頁</a>
 					</div>
 					<div id = "sec8-bot">
+						<div id = "sec8-detail">根據行政院二二八事件研究報告指出，死亡人數逾18,000多人。<br>目前獲賠償之死亡或失蹤人數為830人。</div>
 						<div id = "sec8-icons">
 							<div id = "sec8-icons-blackman"><img src="img/icon_littleman.png">&nbsp;=&nbsp;5人</div>
 							<div id = "sec8-icons-dotsplus"><img src="img/dots_plus.png">行政院估死亡人數</div>
@@ -184,9 +207,14 @@
 						</div>
 						<div id = "sec8-all-img"></div>
 						<div id = "sec8-bot-bot">
+							<div id="fb-like" class="fb-like" data-href="http://p.udn.com.tw/upf/newmedia/2015_data/20150226_udn228/udn228/index.html" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
 							<div id = "backtofirst">
 								<a style = "display: table" href="#firstPage"><img src="img/arrow_tofirst.png">回首頁</a>
 							</div>
+						</div>
+						<div id = "author">
+							聯合報新媒體部/ 楊棋宇、錢震皓、王啟安<br>
+							資料來源/ 財團法人二二八事件紀念基金會
 						</div>
 					</div>
 				</div>		
