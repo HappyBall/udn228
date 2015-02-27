@@ -347,6 +347,10 @@ body{
   	border-left: 16px solid transparent;
 }*/
 
+#twotwosixfive{
+	color: #e94f3c;
+}
+
 #story-canvas{
 	position: absolute;
 	display: none;
@@ -527,7 +531,7 @@ body{
 
 #sec8-scrolling{
 	height: 100%;
-	overflow: scroll;
+	/*overflow: scroll;*/
 	/*overflow-x: hidden;*/
 }
 

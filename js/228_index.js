@@ -1,10 +1,17 @@
+if( /Android|webOS|iPhone|iPod|iPad|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+ // some code..
+ window.location.href = "http://p.udn.com.tw/upf/newmedia/2015_data/20150226_udn228/udn228_m/index.html";
+
+}
+
 var nowSection = 0;
 var mouseNow = {x: 0, y: 0};
 var mouseMoveHandler;
 var timer;
+// var timer2;
 var story_tip_width = 350, story_tip_height = 200;
 var startingTop = 0, startingLeft = 0;
-var storyDict = {};
+var storyDict = [];
 var agebar_heightMap = {};
 
 var blur_count2 = 0;
@@ -15,16 +22,23 @@ var sec2count = 0;
 var sec5count = 0;
 var sec6count = 0;
 var sec7count = 0;
+var story_counter = 0;
 
 var moneybar_heightMap = {};
 var allmoney = 0;
 var random_min = 9;
 var random_max = 99;
+var r_story = 0;
 var regiontoEngDict = {};
 var tipMarginNow = 44;
 var tipIndexNow = 1;
 var timelineDictList = [];
 var regiontextDict = {};
+var blurTimes = 5;
+var checkIE = 0;
+var checkFireFox = 0;
+var circleConcernStatus = 0;
+var window_height;
 
 $(document).ready(function() {
   $('#fullpage').fullpage({
@@ -35,17 +49,12 @@ $(document).ready(function() {
     normalScrollElements: '#sec8-scrolling',
     navigation: true, 
     navigationPosition: 'right',
-    navigationTooltips: ['First page', 'Second page', 'Third and last page'],
+    navigationTooltips: ["數據細說228事件", "青年多烈士 老人多傷殘", "橫掃全台的228事件","探索 2265位受難者的故事", "228國家怎麼賠？", "除了賠錢，該做些什麼？", "228期間重大紀事", "228帶走多少人？"],
 
 
     afterLoad: function(anchorLink, index){
       nowSection = index;
-      $("#region-content").css("display", "table");
-      $("#region-content-invis").css("display", "none");
-      $("#story-img").fadeOut(1);
-      $("#story-tip").fadeOut(1);
-      $("#story-canvas").fadeOut(1);
-
+      
       if(nowSection == 2){
         if(sec2count == 0){
           sec2count++;
@@ -53,17 +62,23 @@ $(document).ready(function() {
           timer = setTimeout(sec2Blur,500);
 
         }
-        
+      }
+      else if(nowSection == 3){
+        if(circleConcernStatus == 1 || circleConcernStatus == 0){
+          clearTimeout(timer);
+          timer = setTimeout(makeCircleConcerned, 500);
+        }
       }
       else if(nowSection == 4){
+        story_counter = 0;
         // console.log(storyDict);
 
         document.addEventListener('mousemove', mouseMoveHandler = function(e){ 
           mouseNow.x = e.clientX || e.pageX;
           mouseNow.y = e.clientY || e.pageY;
           // console.log(mouseNow);
-          dis = Math.round(Math.sqrt(Math.pow(startingTop - event.clientY, 2) + 
-                                    Math.pow(startingLeft - event.clientX, 2)));
+          dis = Math.round(Math.sqrt(Math.pow(startingTop - e.clientY, 2) + 
+                                    Math.pow(startingLeft - e.clientX, 2)));
           // console.log(dis);
           $("#story-img").fadeIn("fast");
           if(dis > 80){
@@ -75,12 +90,12 @@ $(document).ready(function() {
             $("#story-block").css("top", mouseNow.y);
             $("#story-block").css("left", mouseNow.x);
             var r = getRandomInt(1,4);
-            var r_story = getRandomInt(0,2264);
+            r_story = getRandomInt(0,2264);
             // console.log(r);
             var img_name = "img/little-man-" + r.toString() + ".png"
             document.getElementById("little-man").src = img_name;
 
-            var s = storyDict[r_story]["detail"].replace("受難者", "我");
+            var s = replaceAll("受難者", "我", storyDict[r_story]["detail"]);
             s = s.substring(0, s.length - 1);
             var ss = storyDict[r_story]["name"].replace("?", "Ｏ");
             // console.log(s);
@@ -139,12 +154,9 @@ $(document).ready(function() {
       }
 
       else if (nowSection == 8){
+        $("#sec8-scrolling").css("height", window_height);
         clearTimeout(timer);
         timer = setTimeout(showBackToPrev,3000);
-      }
-
-      if(nowSection != 4){
-        document.removeEventListener('mousemove', mouseMoveHandler, false);
       }
       
       // var loadedSection = $(this);
@@ -158,6 +170,28 @@ $(document).ready(function() {
       // if(anchorLink == 'secondSlide'){
       //   alert("Section 2 ended loading");
       // }
+    },
+
+    onLeave: function(index, nextIndex, direction){
+      if(index == 3){
+        $("#region-content").css("display", "table");
+        $("#region-content-invis").css("display", "none");
+      }
+      else if(index == 4){
+        $("#story-img").fadeOut(1);
+        $("#story-tip").fadeOut(1);
+        $("#story-canvas").fadeOut(1);
+        document.removeEventListener('mousemove', mouseMoveHandler, false);
+        document.getElementById("discover").innerHTML = "探索";
+        document.getElementById("twotwosixfive").innerHTML = "2265";
+
+        ga("send", {
+          "hitType": "event",
+          "eventCategory": "story",
+          "eventAction": "mousemove",
+          "eventLabel": story_counter
+        });
+      }
     }
   });
   
@@ -173,11 +207,21 @@ $(document).ready(function() {
   for (var i = 0; i < 171; i++){
     d3.select("#sec8-all-img").append("img").attr("src", "img/08-littleman-offTheRecord.png");
   }
+
+  msieversion();
+  if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1)
+  {
+    checkFireFox = 1;
+    //Do Firefox-related activities
+  }
+
+  window_height = $(window).height();
   
 });
 
 d3.csv("data/stories.csv", function(data_stories){
   storyDict = data_stories;
+  console.log(storyDict);
 });
 
 d3.csv("data/county-english-name.csv", function(data_region_english){
@@ -197,6 +241,24 @@ d3.csv("data/page-seven.csv", function(data_page7){
   // console.log(timelineDictList);
 });
 
+(function($){
+  $(window).load(function(){
+      $("#sec8-scrolling").mCustomScrollbar({
+        callbacks:{
+          onTotalScroll:function(){
+            // console.log("scroll to the end");
+            ga("send", {
+              "hitType": "event",
+              "eventCategory": "scrollBar",
+              "eventAction": "scroll",
+              "eventLabel": "scrollToTheEnd"
+            });
+          }
+        }
+      });
+  });
+})(jQuery);
+
 d3.csv("data/age_peopleNum.csv", function(data_age){
   var w = 630,h = 270,padding = 10, barMargin = 2;
 
@@ -208,14 +270,26 @@ d3.csv("data/age_peopleNum.csv", function(data_age){
     .domain([0, 1022])
     .range([padding, h - padding])
 
-  var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    var s = getAgeRange(d.age);
-    var per = (((d.number/2265)*100).toFixed(2)).toString() + "%";
-    return "<div><strong>年齡:</strong> <span style='color:#e94f3c'>" + s + "</span></div><div style='margin-top:10px'><strong>比例: </strong> <span style='color:#e94f3c'>" + per + "</span></div>";
-  })
+  if (checkFireFox == 1) {
+    var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-(window_height + 10), 0])
+    .html(function(d) {
+      var s = getAgeRange(d.age);
+      var per = (((d.number/2265)*100).toFixed(2)).toString() + "%";
+      return "<div><strong>年齡:</strong> <span style='color:#e94f3c'>" + s + "</span></div><div style='margin-top:10px'><strong>比例: </strong> <span style='color:#e94f3c'>" + per + "</span></div>";
+    });
+  }
+  else{
+    var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      var s = getAgeRange(d.age);
+      var per = (((d.number/2265)*100).toFixed(2)).toString() + "%";
+      return "<div><strong>年齡:</strong> <span style='color:#e94f3c'>" + s + "</span></div><div style='margin-top:10px'><strong>比例: </strong> <span style='color:#e94f3c'>" + per + "</span></div>";
+    });
+  }
 
   var svg_age = d3.select('#age-bar').append('svg').attr({'width': w,'height': h});
 
@@ -252,12 +326,21 @@ d3.csv("data/age_peopleNum.csv", function(data_age){
   .style("stroke-width", "5px")
   .on("mouseover", function(d){
     tip.show(d);
+    d3.select(this).style("opacity", "0.8");
     document.getElementById("age-peonum-num").innerHTML = d.number;
     $("#age-text").css("display", "none");
     $("#age-peonum").css("display", "table");
+
+    ga("send", {
+      "hitType": "event",
+      "eventCategory": "bar",
+      "eventAction": "hover",
+      "eventLabel": "age-bar"
+    });
   })
   .on("mouseout", function(d){
     tip.hide(d);
+    d3.select(this).style("opacity", "1");
     $("#age-text").css("display", "table");
     $("#age-peonum").css("display", "none");
   });
@@ -345,19 +428,33 @@ d3.json("data/tw_county_topo_mod.json", function (data) {
       .attr("cy",function(it) { return it.properties.y + it.properties.c[1] - 300; })
       .attr("r", function(it) { return it.properties.r; })
       .attr("fill", "#e94f3c")
+      .attr("id", function(it){
+        return regiontoEngDict[it.properties.COUNTYNAME];
+      })
       .style("opacity", "0.8")
       .on("mouseover",function(it){
         // console.log(it.properties.COUNTYNAME);
+        circleConcernStatus = 2;
+        if(regiontoEngDict[it.properties.COUNTYNAME] != "Kaohsiun_City")
+          d3.select("#Kaohsiun_City").transition().duration(500).style("opacity", "0.8");
+
         d3.select("#region-invis-littlecircle").selectAll("circle").transition().duration(500).attr("r", it.properties.r);
         d3.select(this).style("opacity", "1");
         document.getElementById("region-invis-map-name").innerHTML = it.properties.COUNTYNAME;
         document.getElementById("region-invis-peonum").innerHTML = region_map[it.properties.COUNTYNAME] + "人";
         var s = "img/" + regiontoEngDict[it.properties.COUNTYNAME] + ".png";
-        console.log(s);
+        // console.log(s);
         document.getElementById("region-map-img").src = s;
         $("#region-content").css("display", "none");
         document.getElementById("region-invis-bot").innerHTML = regiontextDict[it.properties.COUNTYNAME];
         $("#region-content-invis").css("display", "table");
+
+        ga("send", {
+          "hitType": "event",
+          "eventCategory": "bar",
+          "eventAction": "hover",
+          "eventLabel": it.properties.COUNTYNAME
+        });
       })
       .on("mouseout", function(it){
         d3.select(this).style("opacity", "0.8");
@@ -417,15 +514,28 @@ d3.csv("data/money_peopleNum.csv", function(data_money){
     .domain([0, 830])
     .range([padding, h - padding]);
 
-  var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    var s = getMoneyRange(d.money);
-    var per = (((d.number/2264)*100).toFixed(2)).toString() + "%";
-    // console.log(per);
-    return "<div><strong>補償金額: </strong> <span style='color:#e94f3c'>" + s + "</span></div><div style='margin-top:10px'><strong>人數: </strong> <span style='color:#e94f3c'>" + d.number + "</span></div><div style='margin-top:10px'><strong>比例: </strong> <span style='color:#e94f3c'>" + per + "</span></div>";
-  });
+  if(checkFireFox == 1){
+    var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-(window_height * 4 + 10), 0])
+    .html(function(d) {
+      var s = getMoneyRange(d.money);
+      var per = (((d.number/2264)*100).toFixed(2)).toString() + "%";
+      // console.log(per);
+      return "<div><strong>補償金額: </strong> <span style='color:#e94f3c'>" + s + "</span></div><div style='margin-top:10px'><strong>人數: </strong> <span style='color:#e94f3c'>" + d.number + "</span></div><div style='margin-top:10px'><strong>比例: </strong> <span style='color:#e94f3c'>" + per + "</span></div>";
+    });
+  }
+  else{
+    var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+      var s = getMoneyRange(d.money);
+      var per = (((d.number/2264)*100).toFixed(2)).toString() + "%";
+      // console.log(per);
+      return "<div><strong>補償金額: </strong> <span style='color:#e94f3c'>" + s + "</span></div><div style='margin-top:10px'><strong>人數: </strong> <span style='color:#e94f3c'>" + d.number + "</span></div><div style='margin-top:10px'><strong>比例: </strong> <span style='color:#e94f3c'>" + per + "</span></div>";
+    });
+  }
 
   var svg_money = d3.select('#sec5-chart').append('svg').attr({'width': w,'height': h});
 
@@ -456,14 +566,29 @@ d3.csv("data/money_peopleNum.csv", function(data_money){
   })
   .on("mouseover", function(d){
     tip.show(d);
+    d3.select(this).style("opacity", "0.8");
+
+    ga("send", {
+      "hitType": "event",
+      "eventCategory": "bar",
+      "eventAction": "hover",
+      "eventLabel": "money-bar"
+    });
+
   })
   .on("mouseout", function(d){
     tip.hide(d);
+    d3.select(this).style("opacity", "1");
   });
   
 });
 
 function mouseStopped(){
+  story_counter ++;
+  document.getElementById("discover").innerHTML = "探索了&nbsp";
+  document.getElementById("twotwosixfive").innerHTML = story_counter.toString() + "/2265&nbsp";
+
+  storyDict.splice(r_story, 1);
   
   $("#story-tip").fadeIn(300);
   $("#story-canvas").fadeIn(500);
@@ -591,7 +716,7 @@ function sec2Blur(){
       y: "center"
     }
   });
-  if(blur_count2 > 5) {
+  if(blur_count2 > blurTimes) {
     d3.select("#age-title-block").transition().duration(2000).style("opacity", "1");
     d3.select("#age-text").transition().duration(2000).style("opacity", "1");
     d3.select("#age-littleman").transition().duration(2000).style("opacity", "1");
@@ -618,7 +743,7 @@ function sec5Blur(){
     }
   });
   d3.select("#section4-blur").transition().duration(1000).style("opacity", "1");
-  if(blur_count5 > 5){ 
+  if(blur_count5 > blurTimes){ 
     d3.select("#sec5-content").transition().duration(2000).style("opacity", "1");
     for(var i = 0; i < 13; i++){
       if(i == 12)
@@ -645,7 +770,7 @@ function sec6Blur(){
       y: "center"
     }
   });
-  if(blur_count6 > 5) {
+  if(blur_count6 > blurTimes) {
     d3.select('#totalmoney').transition().duration(80).style("opacity", "1");
     numChange();    
     return;
@@ -666,7 +791,7 @@ function sec7Blur(){
       y: "center"
     }
   });
-  if(blur_count7 > 5) {
+  if(blur_count7 > blurTimes) {
     d3.select('#sec7-container').transition().duration(2000).style("opacity", "1");   
     return;
   }
@@ -736,6 +861,13 @@ function moveTip(idx){
   var imageName = "img/07-img-" + idx.toString() + "-hover.png";
   d3.select('#sec7-tip').transition().duration(300).style("margin-left", tipMarginNow.toString()+ "px");
   document.getElementById(imageId).src = imageName;
+
+  ga("send", {
+    "hitType": "event",
+    "eventCategory": "timeline",
+    "eventAction": "hover",
+    "eventLabel": timelineDictList[idx - 1]['title']
+  });  
 }
 
 function changeImg(idx){
@@ -747,4 +879,79 @@ function changeImg(idx){
 function showBackToPrev(){
   d3.select('#backtoprev').transition().duration(2000).style("opacity", "1");
   $("#backtoprev").css("pointer-events", "auto");
+}
+
+function msieversion() {
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer, return version number
+          blurTimes = 1;
+            // alert(parseInt(ua.substring(msie + 5, ua.indexOf(".", msie))));
+        // else                 // If another browser, return 0
+
+            //alert('otherbrowser');
+
+   return false;
+}
+
+function makeCircleConcerned(){
+  if(circleConcernStatus == 0){
+    d3.select("#Kaohsiun_City").transition().duration(500).style("opacity", "1");
+    clearTimeout(timer);
+    timer = setTimeout(makeCircleConcerned, 500);
+    circleConcernStatus = 1;
+  }
+  else if (circleConcernStatus == 1){
+    d3.select("#Kaohsiun_City").transition().duration(500).style("opacity", "0.8");
+    clearTimeout(timer);
+    timer = setTimeout(makeCircleConcerned, 500);
+    circleConcernStatus = 0;
+  }
+  else return;
+}
+
+function carouselClickLeft(){
+  // console.log("clickleft");
+  ga("send", {
+    "hitType": "event",
+    "eventCategory": "carousel",
+    "eventAction": "click",
+    "eventLabel": "prev"
+  });
+}
+
+function carouselClickRight(){
+  // console.log("clickright");
+  ga("send", {
+    "hitType": "event",
+    "eventCategory": "carousel",
+    "eventAction": "click",
+    "eventLabel": "next"
+  });
+}
+
+function prevpageBtnClick(){
+  // console.log("clickprevpage");
+  ga("send", {
+    "hitType": "event",
+    "eventCategory": "button",
+    "eventAction": "click",
+    "eventLabel": "prevPage"
+  });
+}
+
+function firstpageBtnClick(){
+  // console.log("clickfirstpage");
+  ga("send", {
+    "hitType": "event",
+    "eventCategory": "button",
+    "eventAction": "click",
+    "eventLabel": "firstPage"
+  });
+}
+
+function replaceAll(find, replace, str) {
+  return str.replace(new RegExp(find, 'g'), replace);
 }
