@@ -221,7 +221,7 @@ $(document).ready(function() {
 
 d3.csv("data/stories.csv", function(data_stories){
   storyDict = data_stories;
-  console.log(storyDict);
+  //console.log(storyDict);
 });
 
 d3.csv("data/county-english-name.csv", function(data_region_english){
